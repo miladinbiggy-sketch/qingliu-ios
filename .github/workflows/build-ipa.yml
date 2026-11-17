@@ -1,0 +1,46 @@
+name: build-unsigned-ipa
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  ipa:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      - name: Build (no codesign)
+        run: |
+          xcodebuild \
+            -project QingliuVPN.xcodeproj \
+            -scheme QingliuVPN \
+            -sdk iphoneos \
+            -configuration Release \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            build
+
+      - name: Package unsigned .ipa
+        run: |
+          mkdir -p out/Payload
+          cp -R build/Build/Products/Release-iphoneos/QingliuVPN.app out/Payload/
+          cd out
+          zip -qr QingliuVPN-unsigned.ipa Payload
+          ls -lh QingliuVPN-unsigned.ipa
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: QingliuVPN-unsigned
+          path: out/QingliuVPN-unsigned.ipa
+          retention-days: 14

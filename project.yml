@@ -1,0 +1,43 @@
+name: QingliuVPN
+options:
+  bundleIdPrefix: com.qingliu
+  deploymentTarget:
+    iOS: "15.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    MARKETING_VERSION: "1.0.0"
+    CURRENT_PROJECT_VERSION: "1"
+    SWIFT_VERSION: "5.9"
+    DEVELOPMENT_TEAM: ""
+    CODE_SIGN_STYLE: Manual
+    CODE_SIGNING_REQUIRED: "NO"
+    CODE_SIGNING_ALLOWED: "NO"
+targets:
+  QingliuVPN:
+    type: application
+    platform: iOS
+    sources:
+      - path: QingliuVPN
+    info:
+      path: QingliuVPN/Info.plist
+      properties:
+        CFBundleDisplayName: 清流
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        LSApplicationQueriesSchemes:
+          - shadowrocket
+          - stash
+          - clash
+          - sing-box
+          - quantumult-x
+          - loon
+          - surge
+        CFBundleURLTypes:
+          - CFBundleURLName: com.qingliu.vpn
+            CFBundleURLSchemes: [qingliu]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.qingliu.vpn
+        TARGETED_DEVICE_FAMILY: "1"
+        INFOPLIST_KEY_UIUserInterfaceStyle: Dark
